@@ -22,5 +22,5 @@ class TestController(val jdbcTemplate: JdbcTemplate) {
 	fun index(@RequestParam("name") name: String) = "Hello, $name!"
 
 	@GetMapping("/test")
-	fun test() = jdbcTemplate.query("SELECT * FROM STUDENT") { rs, _ -> rs.getString("NAME") }
+	fun test() = jdbcTemplate.query("SELECT * FROM STUDENT") { rs, _ -> rs.getString("SNAME") }
 }
