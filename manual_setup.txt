@@ -1,0 +1,3 @@
+source ~cs348/public/db2profile
+db2 => connect to cs348
+source ~db2inst2/sqllib/db2profile
