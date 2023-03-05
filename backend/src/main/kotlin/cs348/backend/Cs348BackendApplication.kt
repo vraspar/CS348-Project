@@ -1,11 +1,9 @@
 package cs348.backend
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
@@ -22,5 +20,5 @@ class TestController(val jdbcTemplate: JdbcTemplate) {
 	fun index(@RequestParam("name") name: String) = "Hello, $name!"
 
 	@GetMapping("/test")
-	fun test() = jdbcTemplate.query("SELECT * FROM STUDENT") { rs, _ -> rs.getString("SNAME") }
+	fun test(): MutableList<String> = jdbcTemplate.query("SELECT * FROM STUDENT") { rs, _ -> rs.getString("SNAME") }
 }
