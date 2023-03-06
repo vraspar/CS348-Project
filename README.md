@@ -6,7 +6,6 @@ ubuntu2004-004.student.cs.uwaterloo.ca
 4) run manually the commands in manual_setup.txt
 5) run ./setup.sh
 6) cd Database/testdb
-7) python3 making_games_details_smaller.py
-8) db2 -stvf populateNBAGames.sql (for some reason running this on a script doesn't work)
+7) db2 -stvf populateNBAGames.sql (for some reason running this on a script doesn't work)
 
 PS: any questions ask on the discord channel
