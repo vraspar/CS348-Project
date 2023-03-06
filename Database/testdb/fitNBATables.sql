@@ -24,7 +24,7 @@ create table player_season_stat as
  TOV, PF ,PTS , raw_Player_season_stat.SEASON_ID from player, raw_player_season_stat  
  WHERE raw_PLAYER_SEASON_STAT.PLAYER_NAME = PLAYER.PLAyER_NAME) with data; 
 ALTER TABLE player_season_stat ADD FOREIGN KEY (PLAYER_ID) References Player(ID);
-
+-- TODO add primary key constraints to the player_season_stat
 
 -- dropping redudant columns
 ALTER TABLE Player DROP COLUMN season_id;
