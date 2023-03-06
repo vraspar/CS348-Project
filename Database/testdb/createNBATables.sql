@@ -46,12 +46,12 @@ CREATE TABLE Game(
   ,REB_away         NUMERIC(4,1)
 );
 
-CREATE TABLE Player_season_stat(
+CREATE TABLE raw_Player_season_stat(
    PLAYER_ID     INTEGER  NOT NULL-- need to add reference statement here
   ,Player_name   VARCHAR(24) NOT NULL
   ,Pos      VARCHAR(5) NOT NULL
   ,Age      INTEGER  NOT NULL
-  ,Tm       VARCHAR(3) NOT NULL
+  ,Team       VARCHAR(3) NOT NULL
   ,G        INTEGER  NOT NULL
   ,GS       INTEGER  NOT NULL
   ,MP       NUMERIC(4,1) NOT NULL
