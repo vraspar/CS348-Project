@@ -1,10 +1,13 @@
 # CS348-Project
 1) connect to one of these two servers: ubuntu2004-002.student.cs.uwaterloo.ca
 ubuntu2004-004.student.cs.uwaterloo.ca
-2) download the csv file games.csv from https://www.kaggle.com/datasets/nathanlauga/nba-games
-3) download the csv files Players.csv and Seasons_Stats.csv from https://www.kaggle.com/drgilermo/nba-players-stats
-4) scp three csv files to the directory Database/testdb
-5) run manually the commands in manual_setup.txt
-6) run ./setup.sh to create and insert data to the tables
+2) download the csv file games.csv, Players.csv, game_details.csv from https://www.kaggle.com/datasets/nathanlauga/nba-games
+3) scp these two csv files to the directory Database/testdb
+4) run manually the commands in manual_setup.txt
+5) run ./setup.sh
+6) cd Database/testdb
+7) python3 making_games_details_smaller.py
+8) db2 -stvf populateNBAGames.sql
+9) run manually the commands in manual_setup.txt
 
 PS: any questions ask on the discord channel
