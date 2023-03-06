@@ -2,12 +2,19 @@ package cs348.backend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
+import java.sql.ResultSet
 
 @SpringBootApplication
 class Cs348BackendApplication
@@ -31,6 +38,15 @@ data class AveragePlayerSize(
     val height: Double,
     val weight: Double,
 )
+
+data class QueryResult(
+    val headers: List<String>,
+    val rows: List<List<String>>,
+)
+
+open class BadSqlQueryException(message: String) : IllegalArgumentException(message)
+
+class IllegalSqlModificationException(message: String) : BadSqlQueryException(message)
 
 @Service
 class NbaStatsService(val db: JdbcTemplate) {
@@ -85,6 +101,26 @@ class NbaStatsService(val db: JdbcTemplate) {
             },
             state
         ).firstOrNull()
+
+    fun runRawQuery(query: String) =
+        if (!query.trimStart().startsWith("SELECT", ignoreCase = true)) {
+            throw IllegalSqlModificationException("")
+        } else {
+            val mapper = object : RowMapper<List<String>> {
+                lateinit var headers: List<String>
+
+                override fun mapRow(rs: ResultSet, rowNum: Int): List<String> {
+                    if (!::headers.isInitialized) {
+                        headers = (1..rs.metaData.columnCount).map(rs.metaData::getColumnName)
+                    }
+
+                    return (1..rs.metaData.columnCount).map(rs::getString)
+                }
+            }
+
+            val rows = runCatching { db.query(query, mapper) }.getOrElse { throw BadSqlQueryException("") }
+            QueryResult(mapper.headers, rows)
+        }
 }
 
 @RestController
@@ -101,4 +137,16 @@ class StatsController(val service: NbaStatsService) {
 
     @GetMapping("/averages")
     fun averages() = service.findPlayerAverageSizesByState()
+
+    @ExceptionHandler
+    fun handleIllegalSqlModificationException(ex: IllegalSqlModificationException) =
+        ResponseEntity("Error: SQL queries must be read-only", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler
+    fun handleBadSqlQueryException(ex: BadSqlQueryException) =
+        ResponseEntity("Error: Bad SQL Query", HttpStatus.BAD_REQUEST)
+
+    @GetMapping("/query")
+    fun query(@RequestParam("query") query: String) =
+        service.runRawQuery(URLDecoder.decode(query, StandardCharsets.UTF_8))
 }

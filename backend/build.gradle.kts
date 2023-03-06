@@ -23,6 +23,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.ibm.db2:jcc")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	runtimeOnly("com.jakewharton.picnic:picnic:0.6.0")
 }
 
 tasks.withType<KotlinCompile> {

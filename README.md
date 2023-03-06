@@ -7,10 +7,6 @@ ubuntu2004-004.student.cs.uwaterloo.ca
     scp teams.csv dcsena@ubuntu2004-002.student.cs.uwaterloo.ca:cs348/project/CS348-PROJECT/Database/testdb)
 5) run manually the commands in manual_setup.txt
 6) run ./setup.sh
-7) cd Database/testdb
-8) db2 -stvf connectCS348.sql;db2 -stvf populateNBAGames.sql (for some reason this doesn't work on a script)
-9) cd ../..
-10) run ./setup2.sh
 ----------------------------------------------------------------------------------------
 1) For front-end, navigate to the front end directory in the terminal and run npm start
 2) We have designed a basic frontend application that is capable of taking string input and preserves line integrity. 
