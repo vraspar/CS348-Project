@@ -1,3 +1,7 @@
-DROP TABLE raw_games;
-DROP TABLE raw_player;
-DROP TABLE raw_player_stats;
+DROP TABLE Player;
+DROP TABLE Team;
+DROP TABLE Game;
+DROP TABLE Player_season_stat;
+DROP TABLE Player_in_game_stat;
+DROP TABLE Played_at;
+DROP TABLE Plays_for;

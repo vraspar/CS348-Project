@@ -1,3 +1,4 @@
-import from games.csv of del insert into raw_games;
-import from Players.csv of del insert into raw_player;
-import from Seasons_Stats.csv of del insert into raw_player_stats;
+import from players.csv of del insert into Player;
+import from teams.csv of del insert into Team;
+import from games.csv of del insert into Game;
+import from NBA_Player_stats.csv of del insert into Player_season_stat;
