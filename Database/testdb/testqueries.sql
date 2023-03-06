@@ -1,3 +1,1 @@
-SELECT Plays_for.Player_ID, Team.TEAM_CITY
-FROM Plays_for, Team
-WHERE 
+SELECT Player.PLAYER_NAME, Team.CITY FROM Player, Team WHERE Player.Team_id = Team.ID order by PLAYER_NAME

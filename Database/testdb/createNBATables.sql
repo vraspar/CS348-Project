@@ -18,8 +18,9 @@ CREATE TABLE Team(
 CREATE TABLE Player(
    PLAYER_NAME VARCHAR(24) NOT NULL
   ,TEAM_ID     INTEGER  NOT NULL, FOREIGN KEY(TEAM_ID) References Team(ID) 
-  ,ID          INTEGER  NOT NULL PRIMARY KEY
+  ,ID          INTEGER  NOT NULL
   ,season_id      INTEGER  NOT NULL
+  -- add later ,PRIMARY KEY (ID, season_id)
 );
 
 CREATE TABLE Game(
@@ -85,7 +86,7 @@ CREATE TABLE Player_in_game_stat(
   ,TEAM_ID           INTEGER NOT NULL, FOREIGN KEY(TEAM_ID) References Team(ID)
   ,TEAM_ABBREVIATION VARCHAR(3)
   ,TEAM_CITY         VARCHAR(11) 
-  ,PLAYER_ID         INTEGER NOT NULL, FOREIGN KEY(PLAYER_ID) References Player(ID)
+  ,PLAYER_ID         INTEGER NOT NULL --add later, FOREIGN KEY(PLAYER_ID) References Player(ID)
   ,PLAYER_NAME       VARCHAR(14) 
   ,NICKNAME          VARCHAR(6) 
   ,START_POSITION    VARCHAR(1)
@@ -113,14 +114,8 @@ CREATE TABLE Player_in_game_stat(
   ,PRIMARY KEY(GAME_ID, TEAM_ID, PLAYER_ID)
 );
 
-CREATE TABLE Plays_for(
-  PLAYER_ID     INTEGER  NOT NULL, FOREIGN KEY(PLAYER_ID) References Player(ID) 
-  ,TEAM_ID      INTEGER  NOT NULL, FOREIGN KEY(TEAM_ID) References Team(ID)
-  ,PRIMARY KEY(PLAYER_ID, TEAM_ID)
-);
-
 CREATE TABLE Played_at(
-  PLAYER_ID     INTEGER  NOT NULL, FOREIGN KEY(PLAYER_ID) References Player(ID) 
+  PLAYER_ID     INTEGER  NOT NULL --add it later, FOREIGN KEY(PLAYER_ID) References Player(ID) 
   ,TEAM_ID      INTEGER  NOT NULL, FOREIGN KEY(TEAM_ID) References Team(ID)
   ,season_id    VARCHAR(9) NOT NULL
   ,PRIMARY KEY(PLAYER_ID, TEAM_ID, season_id)
