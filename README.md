@@ -8,5 +8,7 @@ ubuntu2004-004.student.cs.uwaterloo.ca
 5) run ./setup.sh
 6) cd Database/testdb
 7) db2 -stvf connectCS348.sql;db2 -stvf populateNBAGames.sql (for some reason this doesn't work on a script)
+8) cd ../..
+9) run ./setup2.sh
 
 PS: any questions ask on the discord channel
