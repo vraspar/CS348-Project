@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run Spring Boot" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="backend.main" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="cs348.backend.Cs348BackendApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
