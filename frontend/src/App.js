@@ -23,8 +23,8 @@ function App() {
         setRows(res.data.rows);  
     } catch (err) {
       console.log(err);
-      setHeaders(["1","2", "3"]);
-      setRows([["1","2", "3"],["1","2", "3"],["1","2", "3"]]);
+      setHeaders([]);
+      setRows([]);
       
       setError(err.message);
 
