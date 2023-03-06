@@ -10,5 +10,10 @@ ubuntu2004-004.student.cs.uwaterloo.ca
 7) db2 -stvf connectCS348.sql;db2 -stvf populateNBAGames.sql (for some reason this doesn't work on a script)
 8) cd ../..
 9) run ./setup2.sh
+----------------------------------------------------------------------------------------
+1) For front-end, navigate to the front end directory in the terminal and run npm start
+2) We have designed a basic frontend application that is capable of taking string input and preserves line integrity. 
+    Not connected to backend yet, this is a WIP for Milestone 2
+3) Since it is a WIP it may crash sometimes, if it does you must open the package.json file and ctrl + s to recompile, which will fix this issue
 
 PS: any questions ask on the discord channel
