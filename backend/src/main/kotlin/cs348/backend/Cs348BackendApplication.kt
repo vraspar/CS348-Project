@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -124,6 +125,7 @@ class NbaStatsService(val db: JdbcTemplate) {
 }
 
 @RestController
+@CrossOrigin
 class StatsController(val service: NbaStatsService) {
     @GetMapping("/")
     fun index(@RequestParam("name") name: String) = "Hello, $name!"
