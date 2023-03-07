@@ -18,7 +18,7 @@ function App() {
     setSubmittedInput(userInput.replace(/\n/g, '<br>'));
     setUserInput('');
     try {
-      const res = await axios.get(`http://localhost:5000/api/query?query=${submittedInput}`);
+      const res = await axios.get(`http://localhost:9093/api/query?query=${submittedInput}`);
         setHeaders(res.data.headers);
         setRows(res.data.rows);  
     } catch (err) {
