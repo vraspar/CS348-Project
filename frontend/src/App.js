@@ -12,15 +12,19 @@ function App() {
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
   };
-
+  const url = "http://ubuntu2004-010.student.cs.uwaterloo.ca:9093/query?query="
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmittedInput(userInput.replace(/\n/g, '<br>'));
+    setSubmittedInput(userInput.replace(/\n/g, " "));
     setUserInput('');
     try {
-      const res = await axios.get(`http://localhost:9093/api/query?query=${submittedInput}`);
+      setError("Loading...");
+      setHeaders([]);
+      setRows([]);
+      const res = await axios.get(url + submittedInput);
         setHeaders(res.data.headers);
         setRows(res.data.rows);  
+        setError("Success!");
     } catch (err) {
       console.log(err);
       setHeaders([]);
