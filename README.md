@@ -10,7 +10,7 @@ ubuntu2004-004.student.cs.uwaterloo.ca
 ----------------------------------------------------------------------------------------
 1) For front-end, navigate to the front end directory in the terminal and run npm start
 2) We have designed a basic frontend application that is capable of taking string input and preserves line integrity. 
-    Not connected to backend yet, this is a WIP for Milestone 2
-3) Since it is a WIP it may crash sometimes, if it does you must open the package.json file and ctrl + s to recompile, which will fix this issue
+    It is connected to backend but, this is a WIP for Milestone 2
+3) Since it is a WIP it may crash sometimes
 
 PS: any questions ask on the discord channel
