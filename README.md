@@ -1,6 +1,5 @@
 # CS348-Project
-1) connect to one of these two servers: ubuntu2004-002.student.cs.uwaterloo.ca
-ubuntu2004-004.student.cs.uwaterloo.ca
+1) connect to one of these two servers: ubuntu2004-002.student.cs.uwaterloo.ca, ubuntu2004-004.student.cs.uwaterloo.ca
 2) clone the repository into the school server
 3) download the csv file games.csv, Players.csv, game_details.csv, teams.csv from https://www.kaggle.com/datasets/nathanlauga/nba-games
 4) download the csv file NBA_Player_stats.csv from https://data.world/etocco/nba-player-stats
