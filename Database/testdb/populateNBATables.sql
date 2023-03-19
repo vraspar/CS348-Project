@@ -18,7 +18,8 @@ import from games_details_smaller_8.csv of del insert into Player_in_game_stat;
 import from games_details_smaller_9.csv of del insert into Player_in_game_stat;
 
 
-DELETE FROM Player_in_game_stat WHERE PLAYER_ID IN (select distinct T1.PLAYER_ID from Player_in_game_stat as T1, Player_in_game_stat as T2 WHERE T1.PLAYER_ID = T2.PLAYER_ID and T1.PLAYER_NAME != T2.PLAYER_NAME);
+DELETE FROM Player_in_game_stat WHERE PLAYER_ID IN (202683, 1628384, 1628388 ,1628408, 1629651, 1629718, 1630288, 1630835);
+    --select distinct T1.PLAYER_ID from Player_in_game_stat as T1, Player_in_game_stat as T2 WHERE T1.PLAYER_ID = T2.PLAYER_ID and T1.PLAYER_NAME != T2.PLAYER_NAME);
 
 -- populate Player table
 INSERT INTO Player (PLAYER_NAME, ID) SELECT Distinct Player_in_game_stat.PLAYER_NAME as PLAYER_NAME, Player_in_game_stat.Player_ID as ID FROM Player_in_game_stat;
