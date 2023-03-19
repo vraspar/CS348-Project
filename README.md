@@ -7,6 +7,7 @@
     scp teams.csv dcsena@ubuntu2004-002.student.cs.uwaterloo.ca:cs348/project/CS348-PROJECT/Database/testdb)
 6) run manually the commands in manual_setup.txt
 7) run ./setup.sh
+    Note that if an error happens, try to run it again (some errors are due to transaction log full, thus running again might fix it) in any case message to the discord group about the error that you got.
 ----------------------------------------------------------------------------------------
 1) For front-end, navigate to the front end directory in the terminal and run npm start
 2) We have designed a basic frontend application that is capable of taking string input and preserves line integrity. 
