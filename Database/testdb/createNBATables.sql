@@ -17,10 +17,7 @@ CREATE TABLE Team(
 
 CREATE TABLE Player(
    PLAYER_NAME VARCHAR(24) NOT NULL
-  ,TEAM_ID     INTEGER  NOT NULL, FOREIGN KEY(TEAM_ID) References Team(ID) 
-  ,ID          INTEGER  NOT NULL
-  ,season_id      INTEGER  NOT NULL
-  -- add later ,PRIMARY KEY (ID, season_id)
+  ,ID          INTEGER  NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE Game(
@@ -78,7 +75,6 @@ CREATE TABLE raw_Player_season_stat(
   ,PF     NUMERIC(3,1) NOT NULL
   ,PTS    NUMERIC(4,1) NOT NULL
   ,season_id   VARCHAR(9) NOT NULL
-  ,PRIMARY KEY(PLAYER_ID, season_id) --references
 );
 
 CREATE TABLE Player_in_game_stat(
@@ -115,8 +111,25 @@ CREATE TABLE Player_in_game_stat(
 );
 
 CREATE TABLE Played_at(
-  PLAYER_ID     INTEGER  NOT NULL --add it later, FOREIGN KEY(PLAYER_ID) References Player(ID) 
+  PLAYER_ID     INTEGER  NOT NULL, FOREIGN KEY(PLAYER_ID) References Player(ID) 
   ,TEAM_ID      INTEGER  NOT NULL, FOREIGN KEY(TEAM_ID) References Team(ID)
   ,season_id    VARCHAR(9) NOT NULL
   ,PRIMARY KEY(PLAYER_ID, TEAM_ID, season_id)
+);
+
+CREATE TABLE raw_nba_finals_awards(
+   Year             INTEGER  NOT NULL PRIMARY KEY 
+  ,Western_Champion VARCHAR(22) NOT NULL
+  ,Eastern_Champion VARCHAR(21) NOT NULL
+  ,Result           VARCHAR(5) NOT NULL
+  ,NBA_Champion     VARCHAR(22) NOT NULL
+  ,NBA_ViceChampion VARCHAR(22) NOT NULL
+  ,Final_Sweep_     VARCHAR(5) NOT NULL
+  ,MVP_Name         VARCHAR(40) NOT NULL
+  ,MVP_Height_m     VARCHAR(4) NOT NULL
+  ,MVP_Height_ft    VARCHAR(9) NOT NULL
+  ,MVP_Position     VARCHAR(7) NOT NULL
+  ,MVP_Team         VARCHAR(22) NOT NULL
+  ,MVP_Nationality  VARCHAR(7) NOT NULL
+  ,MVP_status       VARCHAR(17) NOT NULL
 );

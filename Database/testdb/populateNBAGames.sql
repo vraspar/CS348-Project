@@ -1,1 +1,0 @@
-import from games_details_smaller.csv of del insert into Player_in_game_stat;
