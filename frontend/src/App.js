@@ -5,11 +5,12 @@ import Tabs from  '@mui/material/Tabs';
 import Tab from  '@mui/material/Tab';
 import List from '@mui/material/List';
 import Typography  from '@mui/material/Typography';
-import { Drawer, ListItem, Toolbar, Box, CssBaseline, Divider } from '@mui/material';
+import { Drawer, ListItem, ListItemText, Toolbar, Box, CssBaseline, Divider, ListItemIcon, ListItemButton } from '@mui/material';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route, Link} from 'react-router-dom';
-
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 
 
 import QueryPage from './components/queryPage';
@@ -46,10 +47,21 @@ function App() {
             <Box sx={{ overflow: 'auto' }}>
               <List>
                 <ListItem key="Home" disablePadding>
-                  <Tab label="Home" component={Link} to="/" />
+                  <ListItemButton component={Link} to="/">
+                    <ListItemIcon>
+                      <HomeRoundedIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Home" />
+                  </ListItemButton>
                 </ListItem>
                 <ListItem key="Query" disablePadding>
-                  <Tab label="Query" component={Link} to="/query" />
+                  <ListItemButton component={Link} to="/query">
+                    <ListItemIcon>
+                      <StorageRoundedIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Query" />
+                  </ListItemButton>
+                  
                 </ListItem>
               </List>
             </Box>
