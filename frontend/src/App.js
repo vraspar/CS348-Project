@@ -5,7 +5,7 @@ import Tabs from  '@mui/material/Tabs';
 import Tab from  '@mui/material/Tab';
 import List from '@mui/material/List';
 import Typography  from '@mui/material/Typography';
-import { Drawer, ListItem, Toolbar, Box, CssBaseline } from '@mui/material';
+import { Drawer, ListItem, Toolbar, Box, CssBaseline, Divider } from '@mui/material';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route, Link} from 'react-router-dom';
@@ -25,12 +25,11 @@ function App() {
   
   return (
     <Router>
-      <div>
         <Box sx={{display: 'flex'}}>
           <CssBaseline/>
-          <AppBar position="static">
+          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Toolbar>
-              <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+              <Typography variant="h6" component="div" noWrap>
                 NBA Stat Tracker
               </Typography>
             </Toolbar>
@@ -56,14 +55,14 @@ function App() {
             </Box>
           </Drawer>
         </Box>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <Toolbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/query" element={<QueryPage />} />
           </Routes>
-      </div>
-
+        </Box>
     </Router>
-   
   );
 }
 
