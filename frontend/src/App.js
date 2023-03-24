@@ -5,7 +5,7 @@ import Tabs from  '@mui/material/Tabs';
 import Tab from  '@mui/material/Tab';
 import List from '@mui/material/List';
 import Typography  from '@mui/material/Typography';
-import { Drawer, ListItem, ListItemText, Toolbar, Box, CssBaseline, Divider, ListItemIcon, ListItemButton } from '@mui/material';
+import { Drawer, ListItem, ListItemText, Toolbar, Box, CssBaseline, Divider, ListItemIcon, ListItemButton, IconButton } from '@mui/material';
 
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route, Link} from 'react-router-dom';
@@ -13,19 +13,32 @@ import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
 import ShowChartIcon from '@mui/icons-material/ShowChart';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import QueryPage from './components/queryPage';
 import Home from './components/Home';
 import TeamStat from './components/TeamStat';
 import TeamComp from './components/TeamComp';
+import { Stack } from '@mui/system';
 
 function App() {
 
   const [value, setValue] = useState(0);
-  const server_url = ""
+  const [theme, setTheme] = useState('light');
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: theme,
+    },
+  });
+
 
   return (
     <Router>
+      <ThemeProvider theme={darkTheme}>
         <Box sx={{display: 'flex'}}>
           <CssBaseline/>
         
@@ -34,7 +47,14 @@ function App() {
               <Typography variant="h6" component="div" noWrap>
                 NBA Stat Tracker
               </Typography>
+             <Stack direction="row" spacing={2} sx={{ flexGrow: 1, justifyContent: 'flex-end' }}>
+                <IconButton onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+                {theme === 'light' ? <Brightness4Icon /> : <Brightness7Icon />}
+                </IconButton>
+              </Stack>
+
             </Toolbar>
+           
           </AppBar>
           <Drawer 
             variant="permanent"
@@ -94,6 +114,7 @@ function App() {
           </Routes>
         </Box>
       </Box>
+    </ThemeProvider>
     </Router>
   );
 }
