@@ -11,10 +11,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Routes, Route, Link} from 'react-router-dom';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-
+import ShowChartIcon from '@mui/icons-material/ShowChart';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 
 import QueryPage from './components/queryPage';
 import Home from './components/Home';
+import TeamStat from './components/TeamStat';
+import TeamComp from './components/TeamComp';
 
 function App() {
 
@@ -52,6 +55,22 @@ function App() {
                     <ListItemText primary="Home" />
                   </ListItemButton>
                 </ListItem>
+                <ListItem key="TeamStat" disablePadding>
+                  <ListItemButton component={Link} to="/teamstat">
+                    <ListItemIcon>
+                      <ShowChartIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Teams Stat" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem key="TeamComp" disablePadding>
+                  <ListItemButton component={Link} to="/teamcomp">
+                    <ListItemIcon>
+                      <CompareArrowsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Team Comparison" />
+                  </ListItemButton>
+                </ListItem>
                 <ListItem key="Query" disablePadding>
                   <ListItemButton component={Link} to="/query">
                     <ListItemIcon>
@@ -59,6 +78,7 @@ function App() {
                     </ListItemIcon>
                     <ListItemText primary="Query" />
                   </ListItemButton>
+
                   
                 </ListItem>
               </List>
@@ -69,6 +89,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/query" element={<QueryPage />} />
+            <Route path="/teamstat" element={<TeamStat />} />
+            <Route path="/teamcomp" element={<TeamComp />} />
           </Routes>
         </Box>
       </Box>
