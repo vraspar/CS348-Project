@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 
 const TeamSelection = ({onTeamChanged}) => {
@@ -10,6 +10,8 @@ const TeamSelection = ({onTeamChanged}) => {
         onTeamChanged(event.target.value);
     }
     return (
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Team</InputLabel>
         <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -17,10 +19,11 @@ const TeamSelection = ({onTeamChanged}) => {
             label="Team"
             onChange={(event) => handleTeamChange(event)}
         >
-            <option value="Team 1">Team 1</option>
-            <option value="Team 2">Team 2</option>
-            <option value="Team 3">Team 3</option>
+            <MenuItem value="Team 1">Team 1</MenuItem>
+            <MenuItem value="Team 2">Team 2</MenuItem>
+            <MenuItem value="Team 3">Team 3</MenuItem>
         </Select>    
+        </FormControl>
     );
 }
 
