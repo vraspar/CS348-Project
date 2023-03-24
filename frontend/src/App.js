@@ -19,15 +19,13 @@ import Home from './components/Home';
 function App() {
 
   const [value, setValue] = useState(0);
+  const server_url = ""
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  
   return (
     <Router>
         <Box sx={{display: 'flex'}}>
           <CssBaseline/>
+        
           <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Toolbar>
               <Typography variant="h6" component="div" noWrap>
@@ -66,14 +64,14 @@ function App() {
               </List>
             </Box>
           </Drawer>
-        </Box>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <Toolbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/query" element={<QueryPage />} />
           </Routes>
         </Box>
+      </Box>
     </Router>
   );
 }

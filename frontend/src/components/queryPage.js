@@ -12,7 +12,7 @@ const QueryPage = () => {
     const handleInputChange = (event) => {
       setUserInput(event.target.value);
     };
-    const url = "http://ubuntu2004-010.student.cs.uwaterloo.ca:9093/query?query="
+    const url = process.env.REACT_APP_SERVER_URL +"query?query="
     const handleSubmit = async (event) => {
       event.preventDefault();
       setSubmittedInput(userInput.replace(/\n/g, " "));
