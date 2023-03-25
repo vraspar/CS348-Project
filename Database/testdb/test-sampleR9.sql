@@ -5,4 +5,4 @@ SELECT COUNT(*)
 FROM Game 
 WHERE HOME_TEAM_ID = 1610612738 AND 
     VISITOR_TEAM_ID = 1610612737 AND 
-    PTS_home > PTS_away
+    PTS_home > PTS_away;
