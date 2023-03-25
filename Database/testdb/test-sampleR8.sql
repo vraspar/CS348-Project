@@ -14,4 +14,4 @@ left join
 From Game
 Where season = 2022
 Group by VISITOR_TEAM_ID) on (HOME_TEAM_ID = VISITOR_TEAM_ID)
-)) on Team.ID = TEAM_ID
+)) on Team.ID = TEAM_ID;
