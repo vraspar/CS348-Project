@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
@@ -40,11 +41,11 @@ data class AveragePlayerSize(
     val weight: Double,
 )
 
-data class Player_in_game_stat(
-    val name: String?,
-    val stat: String?,
-    val team_name: String?,
-    val date: String?
+data class PlayerInGameStats(
+    val name: String,
+    val stat: String,
+    val teamName: String,
+    val date: String
 )
 
 data class QueryResult(
@@ -110,27 +111,30 @@ class NbaStatsService(val db: JdbcTemplate) {
             state
         ).firstOrNull()
 
-    
-    fun bestTeamStatInAllMatches(stat: String): List<Player_in_game_stat> {
-        val queryString = """
-        select player.player_name as player_name, $stat, team.ABBREVIATION as team_name, GAME_DATE_EST as date
-        from player_in_game_stat, player, team, Game 
-        WHERE player.ID = player_in_game_stat.player_ID and team.id = player_in_game_stat.team_ID and 
-        Game.ID = player_in_game_stat.GAME_ID and
-        $stat = (SELECT MAX($stat) FROM player_in_game_stat as p2 WHERE team.id = p2.team_id)
-        """;
-        return db.query(
-            queryString,
-            { response, _ ->
-                Player_in_game_stat(
-                    response.getString("PLAYER_NAME"),
-                    response.getString(stat),
-                    response.getString("team_name"),
-                    response.getString("date")
-                )
-            }
-        );
-    }
+    fun findPossibleStats(): List<String>? =
+        db.dataSource?.connection?.metaData?.getColumns(null, null, "PLAYER_IN_GAME_STAT", "%")?.let {
+            generateSequence {
+                if (it.next()) it.getString("COLUMN_NAME") else null
+            }.filterNot(setOf("GAME_ID","TEAM_ID","TEAM_CITY","PLAYER_ID","START_POSITION","COMMENT")::contains).toSet().toList()
+        }
+
+    fun bestTeamStatInAllMatches(stat: String): List<PlayerInGameStats> =
+        db.query(
+            """
+            SELECT player.player_name as player_name, $stat, team.ABBREVIATION as team_name, GAME_DATE_EST as date
+            from player_in_game_stat, player, team, Game 
+            WHERE player.ID = player_in_game_stat.player_ID and team.id = player_in_game_stat.team_ID and 
+            Game.ID = player_in_game_stat.GAME_ID and
+            $stat = (SELECT MAX($stat) FROM player_in_game_stat as p2 WHERE team.id = p2.team_id)
+            """.trimIndent()
+        ) { response, _ ->
+            PlayerInGameStats(
+                response.getString("PLAYER_NAME"),
+                response.getString(stat),
+                response.getString("team_name"),
+                response.getString("date")
+            )
+        }
 
     fun runRawQuery(query: String) =
         if (!query.trimStart().startsWith("SELECT", ignoreCase = true)) {
@@ -169,6 +173,9 @@ class StatsController(val service: NbaStatsService) {
     @GetMapping("/averages")
     fun averages() = service.findPlayerAverageSizesByState()
 
+    @GetMapping("/statNames")
+    fun bestTeamStatInAllMatches() = service.findPossibleStats()
+
     @GetMapping("/bestTeamStatInAllMatches")
     fun bestTeamStatInAllMatches(@RequestParam("stat") stat: String) = service.bestTeamStatInAllMatches(stat)
 
@@ -179,6 +186,10 @@ class StatsController(val service: NbaStatsService) {
     @ExceptionHandler
     fun handleBadSqlQueryException(ex: BadSqlQueryException) =
         ResponseEntity("Error: Bad SQL Query", HttpStatus.BAD_REQUEST)
+
+    @ExceptionHandler
+    fun handleInvalidRequest(ex: MissingServletRequestParameterException) =
+        ResponseEntity("Error: Missing query body", HttpStatus.BAD_REQUEST)
 
     @GetMapping("/query")
     fun query(@RequestParam("query") query: String) =
