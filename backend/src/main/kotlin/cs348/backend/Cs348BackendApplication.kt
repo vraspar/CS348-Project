@@ -53,6 +53,12 @@ data class QueryResult(
     val rows: List<List<String>>,
 )
 
+data class Team(
+    val id: String,
+    val city: String,
+    val nickname: String,
+)
+
 open class BadSqlQueryException(message: String) : IllegalArgumentException(message)
 
 class IllegalSqlModificationException(message: String) : BadSqlQueryException(message)
@@ -136,21 +142,55 @@ class NbaStatsService(val db: JdbcTemplate) {
             )
         }
 
+    fun findAllTeams(): List<Team> =
+        db.query(
+            """
+                SELECT ID, CITY, NICKNAME FROM TEAM
+                WHERE MAX_YEAR = (select MAX(MAX_YEAR) FROM TEAM)
+                ORDER BY CITY, NICKNAME, ID
+            """.trimIndent()
+        ) { response, _ ->
+            Team(
+                response.getString("ID"),
+                response.getString("CITY"),
+                response.getString("NICKNAME"),
+            )
+        }
+
+    private fun makeStatsMapper() = object : RowMapper<List<String>> {
+        lateinit var headers: List<String>
+
+        override fun mapRow(rs: ResultSet, rowNum: Int): List<String> {
+            if (!::headers.isInitialized) {
+                headers = (1..rs.metaData.columnCount).map(rs.metaData::getColumnName)
+            }
+
+            return (1..rs.metaData.columnCount).map(rs::getString)
+        }
+    }
+
+    fun findStatsForTeam(teamId: String): QueryResult {
+        val mapper = makeStatsMapper()
+
+        val rows = db.query(
+            """
+            SELECT PLAYER.PLAYER_NAME, PLAYER_SEASON_STAT.* FROM PLAYED_AT JOIN PLAYER_SEASON_STAT
+            ON PLAYED_AT.PLAYER_ID = PLAYER_SEASON_STAT.PLAYER_ID
+            JOIN PLAYER ON PLAYER.ID = PLAYED_AT.PLAYER_ID
+            WHERE PLAYED_AT.TEAM_ID = ? AND PLAYER_SEASON_STAT.SEASON_ID = (
+            SELECT MAX(SEASON_ID) FROM PLAYER_SEASON_STAT)
+            AND PLAYED_AT.SEASON_ID = (SELECT MAX(SEASON_ID) FROM PLAYED_AT)
+            ORDER BY PLAYER_NAME, ID
+        """.trimIndent(), mapper, teamId)
+
+        return QueryResult(mapper.headers, rows)
+    }
+
     fun runRawQuery(query: String) =
         if (!query.trimStart().startsWith("SELECT", ignoreCase = true)) {
             throw IllegalSqlModificationException("")
         } else {
-            val mapper = object : RowMapper<List<String>> {
-                lateinit var headers: List<String>
-
-                override fun mapRow(rs: ResultSet, rowNum: Int): List<String> {
-                    if (!::headers.isInitialized) {
-                        headers = (1..rs.metaData.columnCount).map(rs.metaData::getColumnName)
-                    }
-
-                    return (1..rs.metaData.columnCount).map(rs::getString)
-                }
-            }
+            val mapper = makeStatsMapper()
 
             val rows = runCatching { db.query(query, mapper) }.getOrElse { throw BadSqlQueryException("") }
             QueryResult(mapper.headers, rows)
@@ -178,6 +218,12 @@ class StatsController(val service: NbaStatsService) {
 
     @GetMapping("/bestTeamStatInAllMatches")
     fun bestTeamStatInAllMatches(@RequestParam("stat") stat: String) = service.bestTeamStatInAllMatches(stat)
+
+    @GetMapping("/teams")
+    fun teams() = service.findAllTeams()
+
+    @GetMapping("/teams/{teamId}")
+    fun statsForTeam(@PathVariable("teamId") teamId: String) = service.findStatsForTeam(teamId)
 
     @ExceptionHandler
     fun handleIllegalSqlModificationException(ex: IllegalSqlModificationException) =
