@@ -115,12 +115,14 @@ const BestTeam = () => {
                 </Table>
             </TableContainer>
         </Container> 
-       
-        <CSVLink data={data} filename={"bestTeam_" + stat + ".csv"}>
-            <Fab color="secondary" aria-label="download" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
-                <DownloadIcon />
-            </Fab>
-        </CSVLink>
+       {
+            data.length > 0 &&  
+            <CSVLink data={data} filename={"bestTeam_" + stat + ".csv"}>
+                <Fab color="secondary" aria-label="download" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
+                    <DownloadIcon />
+                </Fab>
+            </CSVLink>
+        }
     </Box>
     );
 }

@@ -1,6 +1,6 @@
 import { Typography, Box, Divider, Toolbar, Container} from "@mui/material";
 import { Stack } from "@mui/system";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Table,
     TableBody,
@@ -22,26 +22,21 @@ import {StyledTableCell, StyledTableRow} from "../Styles/tables";
 
 
 
-const TeamStat = () => {
+const TeamAway = () => {
 
-    const [team, setTeam] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [data, setData] = useState([]);
 
-    const handleTeamChange = (newVal) => {
-        if (newVal === "") return;
-        setTeam(newVal);
-    }
 
     const handleFetch = () => {
-        if (team === "") return;
         setLoading(true);
         setError(false);
+        setData([]);
     
 
         // fetch best team for stat
-        const url = process.env.REACT_APP_SERVER_URL + "teams/" + team;
+        const url = process.env.REACT_APP_SERVER_URL + 'teamHomeAwayRecords' ;
         console.log("Fetching team stat from " + url);
         axios.get(url)
         .then((res) => {
@@ -59,14 +54,15 @@ const TeamStat = () => {
         }
         );
     }
+
+
     return (
         <Box>
         <Typography variant="overline" component="div" gutterBottom>
-            Team Stat
+            Team Away Performance
         </Typography>
-        <Stack direction="row" spacing={2} sx={{ my:3 }}>
-            <TeamSelection onTeamChanged={handleTeamChange} />
-            <Box >
+
+        <Box >
             <LoadingButton
                 size="large"
                 onClick={handleFetch}
@@ -77,42 +73,39 @@ const TeamStat = () => {
             >
                 <span>Fetch</span>
             </LoadingButton>
-            </Box>
-        </Stack>
+        </Box>
 
         {error && <Typography variant="overline" component="div"sx={{color: "red"}} gutterBottom>
             Encounterd error while fetching data
             </Typography>}
-            <Container sx={{m:0, p:0}}>
-                <TableContainer component={Paper} >
+
+        <Container sx={{m:0, p:0, mt:3}}>
+            <TableContainer component={Paper} >
                 <Table sx={{ minWidth: 650 }} >
                     <TableHead>
                         <StyledTableRow>
 
-                            {data.headers && data.headers.map((header, index) => (
-                                index === 0 ? <StyledTableCell>{header}</StyledTableCell> :
-                                <StyledTableCell align="right">{header}</StyledTableCell>
-                            ))}
+                            <StyledTableCell align="right">Team Abbreviation</StyledTableCell>
+                            <StyledTableCell align="right">Home Score Average</StyledTableCell>
+                            <StyledTableCell align="right">Away Score Average</StyledTableCell>
                         
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
-                        {data.rows && data.rows.map((row, index) => (
-                            <StyledTableRow
-                                key={index}
-                                
-                            >
-                                {row.map((cell, index) => (
-                                    <StyledTableCell align="right">{cell}</StyledTableCell>
-                                ))}
+                        {data.map((row, index) => (
+                            <StyledTableRow key={index}>
+                                <StyledTableCell align="right">{row.team_abbre}</StyledTableCell>
+                                <StyledTableCell align="right">{row.home_score_avg}</StyledTableCell>
+                                <StyledTableCell align="right">{row.away_score_avg}</StyledTableCell>
                             </StyledTableRow>
                         ))}
+
                     </TableBody>
                 </Table>
             </TableContainer>
         </Container>  
-       {data.headers && data.headers.length > 0 &&
-        <CSVLink data={""}filename={team+"_stat.csv"}>
+       {data.length > 0 &&
+        <CSVLink data={data} filename={"teamAwatPerf.csv"}>
             <Fab color="secondary" aria-label="download" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
                 <DownloadIcon />
             </Fab>
@@ -122,4 +115,4 @@ const TeamStat = () => {
     );
 }
 
-export default TeamStat;
+export default TeamAway;
