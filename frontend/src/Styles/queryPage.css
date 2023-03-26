@@ -106,7 +106,7 @@ button:hover {
   color: #c5333e;
 }
 
-table {
+/* table {
   border-collapse: collapse;
   width: 100%;
   margin: 20px 0;
@@ -130,5 +130,5 @@ th {
   padding: 8px;
   border: 1px solid #ddd;
   background-color: #251031;
-}
+} */
 
