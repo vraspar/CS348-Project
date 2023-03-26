@@ -1,6 +1,8 @@
-import { Typography, Box, Divider, Toolbar, Container} from "@mui/material";
+import { Typography, Box, Divider, Toolbar, Container, Fab} from "@mui/material";
 import { Stack } from "@mui/system";
 import React, {useState} from "react";
+import {CSVLink, CSVDownload} from "react-csv";
+import DownloadIcon from '@mui/icons-material/Download';
 
 import {
     Table,
@@ -112,7 +114,13 @@ const BestTeam = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-        </Container>  
+        </Container> 
+       
+        <CSVLink data={data} filename={"bestTeam_" + stat + ".csv"}>
+            <Fab color="secondary" aria-label="download" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
+                <DownloadIcon />
+            </Fab>
+        </CSVLink>
     </Box>
     );
 }
