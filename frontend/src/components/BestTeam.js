@@ -1,46 +1,21 @@
 import { Typography, Box, Divider, Toolbar, Container} from "@mui/material";
 import { Stack } from "@mui/system";
 import React, {useState} from "react";
-import { styled } from '@mui/material/styles';
 
-import StatSelection from "./base/StatSelection";
 import {
     Table,
     TableBody,
-    TableCell,
     TableContainer,
     TableHead,
-    TableRow,
     Paper,
-    tableCellClasses
   } from "@mui/material";
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";
 
-
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-  }));
-  
+import StatSelection from "./base/StatSelection";
+import {StyledTableCell, StyledTableRow} from "../Styles/tables";
 
 const BestTeam = () => {
 
@@ -87,7 +62,7 @@ const BestTeam = () => {
             Best Team Finder
         </Typography>
 
-        <Stack direction="row" spacing={2} >
+        <Stack direction="row" spacing={2} sx={{my:3}} >
        
             <StatSelection  onStatChanged={handleStatChange}/>
             <Box >
@@ -98,7 +73,6 @@ const BestTeam = () => {
                 loadingPosition="end"
                 endIcon={<SendIcon />}
                 variant="contained"
-                sx={{my: 3}}
             >
                 <span>Fetch</span>
             </LoadingButton>
@@ -112,35 +86,33 @@ const BestTeam = () => {
         {error && <Typography variant="overline" component="div"sx={{color: "red"}} gutterBottom>
             Encounterd error while fetching data
             </Typography>}
-
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} >
-                <TableHead>
-                    <StyledTableRow>
-                        <StyledTableCell>Team Name</StyledTableCell>
-                        <StyledTableCell align="right">Player Name</StyledTableCell>
-                        <StyledTableCell align="right">Stat</StyledTableCell>
-                        <StyledTableCell align="right">Date</StyledTableCell>
-                    </StyledTableRow>
-                </TableHead>
-                <TableBody>
-                    {data.map((row, index) => (
-                        <StyledTableRow
-                            key={index}
-                            
-                        >
-                            <StyledTableCell align="right">{row.teamName}</StyledTableCell>
-                            <StyledTableCell align="right">{row.name}</StyledTableCell>
-                            <StyledTableCell align="right">{row.stat}</StyledTableCell>
-                            <StyledTableCell align="right">{row.date}</StyledTableCell>
+        <Container sx={{m:0, p:0}}>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} >
+                    <TableHead>
+                        <StyledTableRow>
+                            <StyledTableCell>Team Name</StyledTableCell>
+                            <StyledTableCell align="right">Player Name</StyledTableCell>
+                            <StyledTableCell align="right">Stat</StyledTableCell>
+                            <StyledTableCell align="right">Date</StyledTableCell>
                         </StyledTableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-
-
-        
+                    </TableHead>
+                    <TableBody>
+                        {data.map((row, index) => (
+                            <StyledTableRow
+                                key={index}
+                                
+                            >
+                                <StyledTableCell align="right">{row.teamName}</StyledTableCell>
+                                <StyledTableCell align="right">{row.name}</StyledTableCell>
+                                <StyledTableCell align="right">{row.stat}</StyledTableCell>
+                                <StyledTableCell align="right">{row.date}</StyledTableCell>
+                            </StyledTableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Container>  
     </Box>
     );
 }

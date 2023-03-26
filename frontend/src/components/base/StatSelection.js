@@ -43,7 +43,7 @@ const StatSelection = ({onStatChanged}) => {
     }, []);
 
     return (
-        <FormControl fullWidth margin="normal">
+        <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Statistics</InputLabel>
         <Select
             labelId="demo-simple-select-label"
