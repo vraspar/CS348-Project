@@ -15,6 +15,7 @@ import ShowChartIcon from '@mui/icons-material/ShowChart';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import GroupWorkIcon from '@mui/icons-material/GroupWork';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -22,7 +23,9 @@ import QueryPage from './components/queryPage';
 import Home from './components/Home';
 import TeamStat from './components/TeamStat';
 import TeamComp from './components/TeamComp';
+import BestTeam from './components/BestTeam';
 import { Stack } from '@mui/system';
+import GroupWork from '@mui/icons-material/GroupWork';
 
 function App() {
 
@@ -75,6 +78,14 @@ function App() {
                     <ListItemText primary="Home" />
                   </ListItemButton>
                 </ListItem>
+                <ListItem key="BestTeam" disablePadding>
+                  <ListItemButton component={Link} to="/bestteam">
+                    <ListItemIcon>
+                      <GroupWork />
+                    </ListItemIcon>
+                    <ListItemText primary="Best Team" />
+                  </ListItemButton>
+                </ListItem>
                 <ListItem key="TeamStat" disablePadding>
                   <ListItemButton component={Link} to="/teamstat">
                     <ListItemIcon>
@@ -98,8 +109,6 @@ function App() {
                     </ListItemIcon>
                     <ListItemText primary="Query" />
                   </ListItemButton>
-
-                  
                 </ListItem>
               </List>
             </Box>
@@ -111,6 +120,7 @@ function App() {
             <Route path="/query" element={<QueryPage />} />
             <Route path="/teamstat" element={<TeamStat />} />
             <Route path="/teamcomp" element={<TeamComp />} />
+            <Route path="/bestteam" element={<BestTeam />} />
           </Routes>
         </Box>
       </Box>
