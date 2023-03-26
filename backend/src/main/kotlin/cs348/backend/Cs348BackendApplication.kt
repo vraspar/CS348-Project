@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.MissingServletRequestParameterException
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
@@ -41,22 +40,15 @@ data class AveragePlayerSize(
     val weight: Double,
 )
 
-data class PlayerInGameStats(
-    val name: String,
-    val stat: String,
-    val teamName: String,
-    val date: String
-)
-
 data class QueryResult(
     val headers: List<String>,
     val rows: List<List<String>>,
 )
 
-data class Team(
-    val id: String,
-    val city: String,
-    val nickname: String,
+data class TeamHomeAwayScore(
+    val team_abbre: String,
+    var home_score_avg: Double,
+    var away_score_avg: Double,
 )
 
 open class BadSqlQueryException(message: String) : IllegalArgumentException(message)
@@ -117,85 +109,59 @@ class NbaStatsService(val db: JdbcTemplate) {
             state
         ).firstOrNull()
 
-    fun findPossibleStats(): List<String>? =
-        db.dataSource?.connection?.metaData?.getColumns(null, null, "PLAYER_IN_GAME_STAT", "%")?.let {
-            generateSequence {
-                if (it.next()) it.getString("COLUMN_NAME") else null
-            }.filterNot(setOf("GAME_ID","TEAM_ID","TEAM_CITY","PLAYER_ID","START_POSITION","COMMENT")::contains).toSet().toList()
-        }
-
-    fun bestTeamStatInAllMatches(stat: String): List<PlayerInGameStats> =
-        db.query(
-            """
-            SELECT player.player_name as player_name, $stat, team.ABBREVIATION as team_name, GAME_DATE_EST as date
-            from player_in_game_stat, player, team, Game 
-            WHERE player.ID = player_in_game_stat.player_ID and team.id = player_in_game_stat.team_ID and 
-            Game.ID = player_in_game_stat.GAME_ID and
-            $stat = (SELECT MAX($stat) FROM player_in_game_stat as p2 WHERE team.id = p2.team_id)
-            """.trimIndent()
-        ) { response, _ ->
-            PlayerInGameStats(
-                response.getString("PLAYER_NAME"),
-                response.getString(stat),
-                response.getString("team_name"),
-                response.getString("date")
-            )
-        }
-
-    fun findAllTeams(): List<Team> =
-        db.query(
-            """
-                SELECT ID, CITY, NICKNAME FROM TEAM
-                WHERE MAX_YEAR = (select MAX(MAX_YEAR) FROM TEAM)
-                ORDER BY CITY, NICKNAME, ID
-            """.trimIndent()
-        ) { response, _ ->
-            Team(
-                response.getString("ID"),
-                response.getString("CITY"),
-                response.getString("NICKNAME"),
-            )
-        }
-
-    private fun makeStatsMapper() = object : RowMapper<List<String>> {
-        lateinit var headers: List<String>
-
-        override fun mapRow(rs: ResultSet, rowNum: Int): List<String> {
-            if (!::headers.isInitialized) {
-                headers = (1..rs.metaData.columnCount).map(rs.metaData::getColumnName)
-            }
-
-            return (1..rs.metaData.columnCount).map(rs::getString)
-        }
-    }
-
-    fun findStatsForTeam(teamId: String): QueryResult {
-        val mapper = makeStatsMapper()
-
-        val rows = db.query(
-            """
-            SELECT PLAYER.PLAYER_NAME, PLAYER_SEASON_STAT.* FROM PLAYED_AT JOIN PLAYER_SEASON_STAT
-            ON PLAYED_AT.PLAYER_ID = PLAYER_SEASON_STAT.PLAYER_ID
-            JOIN PLAYER ON PLAYER.ID = PLAYED_AT.PLAYER_ID
-            WHERE PLAYED_AT.TEAM_ID = ? AND PLAYER_SEASON_STAT.SEASON_ID = (
-                SELECT MAX(SEASON_ID) FROM PLAYER_SEASON_STAT)
-            AND PLAYED_AT.SEASON_ID = (SELECT MAX(SEASON_ID) FROM PLAYED_AT)
-            ORDER BY PLAYER_NAME, ID
-        """.trimIndent(), mapper, teamId)
-
-        return QueryResult(mapper.headers, rows)
-    }
-
     fun runRawQuery(query: String) =
         if (!query.trimStart().startsWith("SELECT", ignoreCase = true)) {
             throw IllegalSqlModificationException("")
         } else {
-            val mapper = makeStatsMapper()
+            val mapper = object : RowMapper<List<String>> {
+                lateinit var headers: List<String>
+
+                override fun mapRow(rs: ResultSet, rowNum: Int): List<String> {
+                    if (!::headers.isInitialized) {
+                        headers = (1..rs.metaData.columnCount).map(rs.metaData::getColumnName)
+                    }
+
+                    return (1..rs.metaData.columnCount).map(rs::getString)
+                }
+            }
 
             val rows = runCatching { db.query(query, mapper) }.getOrElse { throw BadSqlQueryException("") }
             QueryResult(mapper.headers, rows)
         }
+
+
+    fun findTeamHomeAwayRecord(): List<TeamHomeAwayScore> =
+        db.query(
+            """
+            Select ABBREVIATION, avg_points_home, avg_points_away
+            From Team left join
+            (Select HOME_TEAM_ID as TEAM_ID, avg_points_home, avg_points_away
+            From (
+
+            (Select HOME_TEAM_ID, avg(PTS_home) as avg_points_home 
+            From Game
+            Where season = 2022
+            Group by HOME_TEAM_ID)
+
+            left join
+
+
+            (Select VISITOR_TEAM_ID, avg(PTS_away) as avg_points_away
+            From Game
+            Where season = 2022
+            Group by VISITOR_TEAM_ID) on (HOME_TEAM_ID = VISITOR_TEAM_ID)
+            )) on Team.ID = TEAM_ID
+            """.trimIndent(),
+        ) { response, _ ->
+            TeamHomeAwayScore(
+                response.getString("ABBREVIATION"),
+                response.getDouble("avg_points_home"),
+                response.getDouble("avg_points_away")
+            )
+        }
+
 }
+
 
 @RestController
 @CrossOrigin
@@ -213,18 +179,6 @@ class StatsController(val service: NbaStatsService) {
     @GetMapping("/averages")
     fun averages() = service.findPlayerAverageSizesByState()
 
-    @GetMapping("/statNames")
-    fun bestTeamStatInAllMatches() = service.findPossibleStats()
-
-    @GetMapping("/bestTeamStatInAllMatches")
-    fun bestTeamStatInAllMatches(@RequestParam("stat") stat: String) = service.bestTeamStatInAllMatches(stat)
-
-    @GetMapping("/teams")
-    fun teams() = service.findAllTeams()
-
-    @GetMapping("/teams/{teamId}")
-    fun statsForTeam(@PathVariable("teamId") teamId: String) = service.findStatsForTeam(teamId)
-
     @ExceptionHandler
     fun handleIllegalSqlModificationException(ex: IllegalSqlModificationException) =
         ResponseEntity("Error: SQL queries must be read-only", HttpStatus.BAD_REQUEST)
@@ -233,11 +187,11 @@ class StatsController(val service: NbaStatsService) {
     fun handleBadSqlQueryException(ex: BadSqlQueryException) =
         ResponseEntity("Error: Bad SQL Query", HttpStatus.BAD_REQUEST)
 
-    @ExceptionHandler
-    fun handleInvalidRequest(ex: MissingServletRequestParameterException) =
-        ResponseEntity("Error: Missing query body", HttpStatus.BAD_REQUEST)
-
     @GetMapping("/query")
     fun query(@RequestParam("query") query: String) =
         service.runRawQuery(URLDecoder.decode(query, StandardCharsets.UTF_8))
+
+    @GetMapping("/teamHomeAwayRecords")
+    fun teamHomeAwayRecord() = service.findTeamHomeAwayRecord()
+
 }
