@@ -16,6 +16,8 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import GroupWorkIcon from '@mui/icons-material/GroupWork';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -24,6 +26,8 @@ import Home from './components/Home';
 import TeamStat from './components/TeamStat';
 import TeamComp from './components/TeamComp';
 import BestTeam from './components/BestTeam';
+import TeamAway from './components/TeamAway';
+import TeamCloseWins from './components/TeamCloseWins';
 import { Stack } from '@mui/system';
 import GroupWork from '@mui/icons-material/GroupWork';
 
@@ -94,12 +98,28 @@ function App() {
                     <ListItemText primary="Teams Stat" />
                   </ListItemButton>
                 </ListItem>
-                <ListItem key="TeamComp" disablePadding>
+                {/* <ListItem key="TeamComp" disablePadding>
                   <ListItemButton component={Link} to="/teamcomp">
                     <ListItemIcon>
                       <CompareArrowsIcon />
                     </ListItemIcon>
                     <ListItemText primary="Team Comparison" />
+                  </ListItemButton>
+                </ListItem> */}
+                <ListItem key="TeamAway" disablePadding>
+                  <ListItemButton component={Link} to="/teamaway">
+                    <ListItemIcon>
+                      <MeetingRoomIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Team Away" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem key="TeamCloseWins" disablePadding>
+                  <ListItemButton component={Link} to="/teamclosewins">
+                    <ListItemIcon>
+                      <EmojiEventsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Team Close Wins" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem key="Query" disablePadding>
@@ -121,6 +141,8 @@ function App() {
             <Route path="/teamstat" element={<TeamStat />} />
             <Route path="/teamcomp" element={<TeamComp />} />
             <Route path="/bestteam" element={<BestTeam />} />
+            <Route path="/teamclosewins" element={<TeamCloseWins />} />
+            <Route path="/teamaway" element={<TeamAway />} />
           </Routes>
         </Box>
       </Box>
