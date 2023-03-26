@@ -1,4 +1,4 @@
-import { Typography, Box, Divider, Toolbar} from "@mui/material";
+import { Typography, Box, Divider, Toolbar, Container} from "@mui/material";
 import { Stack } from "@mui/system";
 import React, {useState} from "react";
 
@@ -65,16 +65,21 @@ const BestTeam = () => {
         <Stack direction="row" spacing={2} >
        
             <StatSelection  onStatChanged={handleStatChange}/>
+            <Box >
             <LoadingButton
-                size="small"
+                size="large"
                 onClick={handleFetch}
                 loading={loading}
                 loadingPosition="end"
                 endIcon={<SendIcon />}
-                variant="outlined"
+                variant="contained"
+                sx={{my: 3}}
+               
             >
                 <span>Fetch</span>
             </LoadingButton>
+            </Box>
+           
 
 
             
