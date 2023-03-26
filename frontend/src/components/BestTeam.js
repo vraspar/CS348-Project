@@ -1,6 +1,7 @@
 import { Typography, Box, Divider, Toolbar, Container} from "@mui/material";
 import { Stack } from "@mui/system";
 import React, {useState} from "react";
+import { styled } from '@mui/material/styles';
 
 import StatSelection from "./base/StatSelection";
 import {
@@ -10,12 +11,36 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper
+    Paper,
+    tableCellClasses
   } from "@mui/material";
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import axios from "axios";
+
+
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+  }));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+  }));
+  
 
 const BestTeam = () => {
 
@@ -74,7 +99,6 @@ const BestTeam = () => {
                 endIcon={<SendIcon />}
                 variant="contained"
                 sx={{my: 3}}
-               
             >
                 <span>Fetch</span>
             </LoadingButton>
@@ -92,24 +116,24 @@ const BestTeam = () => {
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} >
                 <TableHead>
-                    <TableRow>
-                        <TableCell align="right">Team Name</TableCell>
-                        <TableCell align="right">Player Name</TableCell>
-                        <TableCell align="right">Stat</TableCell>
-                        <TableCell align="right">Date</TableCell>
-                    </TableRow>
+                    <StyledTableRow>
+                        <StyledTableCell>Team Name</StyledTableCell>
+                        <StyledTableCell align="right">Player Name</StyledTableCell>
+                        <StyledTableCell align="right">Stat</StyledTableCell>
+                        <StyledTableCell align="right">Date</StyledTableCell>
+                    </StyledTableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((row) => (
-                        <TableRow
-                            key={row.team}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    {data.map((row, index) => (
+                        <StyledTableRow
+                            key={index}
+                            
                         >
-                            <TableCell align="right">{row.teamName}</TableCell>
-                            <TableCell align="right">{row.name}</TableCell>
-                            <TableCell align="right">{row.stat}</TableCell>
-                            <TableCell align="right">{row.date}</TableCell>
-                        </TableRow>
+                            <StyledTableCell align="right">{row.teamName}</StyledTableCell>
+                            <StyledTableCell align="right">{row.name}</StyledTableCell>
+                            <StyledTableCell align="right">{row.stat}</StyledTableCell>
+                            <StyledTableCell align="right">{row.date}</StyledTableCell>
+                        </StyledTableRow>
                     ))}
                 </TableBody>
             </Table>
