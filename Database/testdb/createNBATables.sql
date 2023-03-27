@@ -83,7 +83,7 @@ CREATE TABLE Player_in_game_stat(
   ,TEAM_ABBREVIATION VARCHAR(3)
   ,TEAM_CITY         VARCHAR(11) 
   ,PLAYER_ID         INTEGER NOT NULL --add later, FOREIGN KEY(PLAYER_ID) References Player(ID)
-  ,PLAYER_NAME       VARCHAR(14) 
+  ,PLAYER_NAME       VARCHAR(20) 
   ,NICKNAME          VARCHAR(6) 
   ,START_POSITION    VARCHAR(1)
   ,COMMENT           VARCHAR(30)

@@ -48,11 +48,55 @@ INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
 VALUES (2022, 'Stephen Curry', 'Finals MVP');
 
 INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
-VALUES (2021, 'Giannis Antetokounmpo', 'Finals MVP');
+VALUES (2021, 'Giannis Antetokounmp', 'Finals MVP');
 
 INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
-VALUES (2020, 'Lebron James', 'Finals MVP');
+VALUES (2020, 'LeBron James', 'Finals MVP');
 
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2019, 'Kawhi Leonard', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2018, 'Kevin Durant', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2017, 'Kevin Durant', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2016, 'LeBron James', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2015, 'Andre Iguodala', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2014, 'Kawhi Leonard', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2013, 'LeBron James', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2012, 'LeBron James', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2011, 'Dirk Nowitzki', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2010, 'Kobe Bryant', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2009, 'Kobe Bryant', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2008, 'Paul Pierce', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2007, 'Tony Parker', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2006, 'Dwyane Wade', 'Finals MVP');
+
+INSERT INTO raw_nba_awards (YEAR, Player_name, Award_name)
+VALUES (2005, 'Tim Duncan', 'Finals MVP');
 
 create table nba_awards as 
 (
