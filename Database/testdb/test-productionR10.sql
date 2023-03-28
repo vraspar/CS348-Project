@@ -1,4 +1,4 @@
--- Getting finalist teams between 1965 and 1969
+-- Getting finalist teams between 1965 and 1999
 
 SELECT TEAM.CITY, TEAM.NICKNAME, RANK() OVER (ORDER BY ISNULL(WINS, 0) DESC) AS RANK,
 ISNULL(WINS, 0) AS NUM_WINS, ISNULL(RUNNERS_UP, 0) AS NUM_RUNNERS_UP FROM (
