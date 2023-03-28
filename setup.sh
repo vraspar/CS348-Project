@@ -1,6 +1,6 @@
 #!/bin/sh
 
-python -c "import sys, pkgutil; sys.exit(0 if pkgutil.find_loader(sys.argv[1]) else 1)" pandas
+python3 -c "import sys, pkgutil; sys.exit(0 if pkgutil.find_loader(sys.argv[1]) else 1)" pandas
 if [ "$?" -ne 0 ];
 then
     echo "Module pandas not found. Please install or activate venv"
