@@ -194,7 +194,7 @@ class NbaStatsService(val db: JdbcTemplate) {
             WHERE PLAYED_AT.TEAM_ID = ? AND PLAYER_SEASON_STAT.SEASON_ID = (
                 SELECT MAX(SEASON_ID) FROM PLAYER_SEASON_STAT)
             AND TEAM.ABBREVIATION = PLAYER_SEASON_STAT.TEAM
-            AND PLAYED_AT.SEASON_ID = (SELECT MAX(SEASON_ID) FROM PLAYED_AT)
+            AND PLAYED_AT.SEASON_ID = 2021
             ORDER BY PLAYER_NAME, PLAYER.ID;
         """.trimIndent(), mapper, teamId)
 
