@@ -1,13 +1,13 @@
 -- sample output Query 1
 1          
 -----------
-         3
+         32
 
-1 record(s) selected.
+  1 record(s) selected.
 
 -- sample output  Query 2
 1          
 -----------
-         11
+         27
 
   1 record(s) selected.
