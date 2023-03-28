@@ -71,6 +71,14 @@ data class TeamCloseWins(
     val away_close_wins: Int,
 )
 
+data class WinnerResults(
+    val rank: Int,
+    val city: String,
+    val nickname: String,
+    val numWins: Int,
+    val numRunnersUp: Int,
+)
+
 
 open class BadSqlQueryException(message: String) : IllegalArgumentException(message)
 
@@ -266,6 +274,29 @@ class NbaStatsService(val db: JdbcTemplate) {
             )
         }
 
+    fun findWinners(startSeason: Int, endSeason: Int): List<WinnerResults> =
+        db.query(
+            """
+                SELECT TEAM.CITY, TEAM.NICKNAME, RANK() OVER (ORDER BY ISNULL(WINS, 0) DESC) AS RANK,
+                ISNULL(WINS, 0) AS NUM_WINS, ISNULL(RUNNERS_UP, 0) AS NUM_RUNNERS_UP FROM (
+                    SELECT CHAMPION, COUNT(*) AS WINS
+                    FROM NBA_FINALS WHERE YEAR BETWEEN ? AND ? GROUP BY CHAMPION
+                ) AS WINNER FULL OUTER JOIN (
+                    SELECT VICE_CHAMPION, COUNT(*) AS RUNNERS_UP
+                FROM NBA_FINALS WHERE YEAR BETWEEN ? AND ? GROUP BY VICE_CHAMPION
+                ) AS RUNNER_UP ON (WINNER.CHAMPION = RUNNER_UP.VICE_CHAMPION)
+                JOIN TEAM ON (COALESCE(WINNER.CHAMPION, RUNNER_UP.VICE_CHAMPION) = TEAM.ID)
+                ORDER BY NUM_WINS DESC, NUM_RUNNERS_UP DESC, TEAM.CITY, TEAM.NICKNAME
+            """.trimIndent(),
+            { response, _ ->
+                WinnerResults(
+                    response.getInt("RANK"),
+                    response.getString("CITY"),
+                    response.getString("NICKNAME"),
+                    response.getInt("NUM_WINS"),
+                    response.getInt("NUM_RUNNERS_UP")
+                )
+            },  startSeason, endSeason, startSeason, endSeason)
 }
 
 
@@ -319,4 +350,7 @@ class StatsController(val service: NbaStatsService) {
     @GetMapping("/teamCloseWins")
     fun teamCloseWins() = service.findTeamCloseWins()
 
+    @GetMapping("/championships")
+    fun championships(@RequestParam("startSeason") startSeason: Int?, @RequestParam("endSeason") endSeason: Int?) =
+        service.findWinners(startSeason ?: 1900, endSeason ?: 2100)
 }
