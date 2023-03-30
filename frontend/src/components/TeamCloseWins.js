@@ -59,7 +59,7 @@ const TeamCloseWins = () => {
     return (
         <Box>
         <Typography variant="overline" component="div" gutterBottom>
-            Team Away Performance
+            Team Close Wins
         </Typography>
 
         <Box >
