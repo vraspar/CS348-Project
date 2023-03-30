@@ -18,7 +18,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import GroupWorkIcon from '@mui/icons-material/GroupWork';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-
+import CelebrationRoundedIcon from '@mui/icons-material/CelebrationRounded';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import QueryPage from './components/queryPage';
@@ -30,6 +30,7 @@ import TeamAway from './components/TeamAway';
 import TeamCloseWins from './components/TeamCloseWins';
 import { Stack } from '@mui/system';
 import GroupWork from '@mui/icons-material/GroupWork';
+import ChampionShips from './components/Championships';
 
 function App() {
 
@@ -130,6 +131,14 @@ function App() {
                     <ListItemText primary="Query" />
                   </ListItemButton>
                 </ListItem>
+                <ListItem key="ChampionShips" disablePadding>
+                  <ListItemButton component={Link} to="/championships">
+                    <ListItemIcon>
+                      <CelebrationRoundedIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="ChampionShips" />
+                  </ListItemButton>
+                </ListItem>
               </List>
             </Box>
           </Drawer>
@@ -143,6 +152,7 @@ function App() {
             <Route path="/bestteam" element={<BestTeam />} />
             <Route path="/teamclosewins" element={<TeamCloseWins />} />
             <Route path="/teamaway" element={<TeamAway />} />
+            <Route path="/championships" element={<ChampionShips />} />
           </Routes>
         </Box>
       </Box>

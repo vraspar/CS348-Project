@@ -66,7 +66,7 @@ const TeamStat = () => {
         </Typography>
         <Stack direction="row" spacing={2} sx={{ my:3 }}>
             <TeamSelection onTeamChanged={handleTeamChange} />
-            <Box >
+            <Box>
             <LoadingButton
                 size="large"
                 onClick={handleFetch}
