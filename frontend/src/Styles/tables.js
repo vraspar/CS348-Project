@@ -9,9 +9,11 @@ import {
     tableCellClasses
   } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import React from "react";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
+      backgroundColor: theme.palette.primary.dark,
       color: theme.palette.common.white,
     },
     [`&.${tableCellClasses.body}`]: {
@@ -28,6 +30,25 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
       border: 0,
     },
   }));
+
+const descendingComparator = (a, b, orderBy) => {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+}
+  
+const getComparator = (order, orderBy) => {
+    return order === 'desc'
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+
+
   
 
 export {StyledTableCell, StyledTableRow};

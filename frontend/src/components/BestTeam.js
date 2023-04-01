@@ -1,4 +1,4 @@
-import { Typography, Box, Divider, Toolbar, Container, Fab} from "@mui/material";
+import { Typography, Box, Divider, Toolbar, Container, Fab, TableSortLabel} from "@mui/material";
 import { Stack } from "@mui/system";
 import React, {useState} from "react";
 import {CSVLink, CSVDownload} from "react-csv";
@@ -25,6 +25,26 @@ const BestTeam = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+
+    const [orderBy, setOrderBy] = useState("");
+    const [order, setOrder] = useState("asc");
+
+    const handleSort = (order, orderBy) => {
+        setOrder(order);
+        setOrderBy(orderBy);
+
+        const sortedData = data.sort((a, b) => {
+            if (order === "asc") {
+                return a[orderBy] - b[orderBy];
+            } else {
+                return b[orderBy] - a[orderBy];
+            }
+        }
+        );
+        setData(sortedData);
+        
+    }
+
 
     const handleFetch = () => {
         if (stat === "") return;
@@ -79,10 +99,6 @@ const BestTeam = () => {
                 <span>Fetch</span>
             </LoadingButton>
             </Box>
-           
-
-
-            
         </Stack>
        
         {error && <Typography variant="overline" component="div"sx={{color: "red"}} gutterBottom>
@@ -93,9 +109,28 @@ const BestTeam = () => {
                 <Table sx={{ minWidth: 650 }} >
                     <TableHead>
                         <StyledTableRow>
-                            <StyledTableCell>Team Name</StyledTableCell>
+                            <StyledTableCell>
+                                <TableSortLabel
+                                    active={true}
+                                    direction={orderBy === "teamName" ? order : "asc"}
+                                    onClick={() => handleSort(orderBy === "teamName" ? (order === "asc" ? "desc" : "asc") : "asc", "teamName")}
+                               />
+
+                                Team Name
+                              
+                            </StyledTableCell>
                             <StyledTableCell align="right">Player Name</StyledTableCell>
-                            <StyledTableCell align="right">Stat</StyledTableCell>
+                            <StyledTableCell align="right">
+                                <TableSortLabel
+                                    active={true}
+                                    direction={orderBy === "stat" ? order : "asc"}
+                                    onClick={() => handleSort(orderBy === "stat" ? (order === "asc" ? "desc" : "asc") : "asc", "stat")}
+                                   
+                                />
+                                Stat
+                               
+                                </StyledTableCell>
+
                             <StyledTableCell align="right">Date</StyledTableCell>
                         </StyledTableRow>
                     </TableHead>

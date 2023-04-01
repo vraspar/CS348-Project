@@ -29,6 +29,7 @@ const TeamStat = () => {
     const [error, setError] = useState(false);
     const [data, setData] = useState([]);
 
+
     const handleTeamChange = (newVal) => {
         if (newVal === "") return;
         setTeam(newVal);
