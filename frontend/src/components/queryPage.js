@@ -3,6 +3,7 @@ import axios from "axios";
 import image from '../Assets/diagram.png';
 import '../Styles/queryPage.css';
 import {Autocomplete} from "@mui/lab";
+import {Snackbar} from "@mui/material";
 
 const QueryPage = () => {
     const [userInput, setUserInput] = useState('');
@@ -11,8 +12,18 @@ const QueryPage = () => {
     const [headers, setHeaders] = useState([]);
     const [rows, setRows] = useState([]);
     const [error, setError] = useState('');
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const handleInputChange = (event) => {
-        setUserInput(event.target.value);
+        const text = event.target.value
+        if (text.toLowerCase() === 'update' || text.toLowerCase() === 'delete' || text.toLowerCase() === 'alter' || text.toLowerCase() === 'drop') {
+            setOpenSnackbar(true);
+        } else {
+            setUserInput(text);
+            setOpenSnackbar(false);
+        }
+    };
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
     };
     const handleSelectChange = (event) => {
         setUserInput(event.target.value);
@@ -42,6 +53,7 @@ const QueryPage = () => {
         }
     };
 
+    const anchorOrigin = { vertical: 'top', horizontal: 'center' }
 
     return (
         <div className="app-container">
@@ -58,8 +70,6 @@ const QueryPage = () => {
                         <option value="SELECT * INTO FROM">SELECT * INTO FROM</option>
                         <option value="SELECT DISTINCT FROM">SELECT DISTINCT FROM</option>
                         <option value="CREATE TABLE">CREATE TABLE</option>
-                        <option value="DROP TABLE">DROP TABLE</option>
-                        <option value="DROP INDEX">DROP INDEX</option>
                     </select>
                     <textarea
                         id={"user-input"}
@@ -68,6 +78,13 @@ const QueryPage = () => {
                         value={userInput}
                         onChange={handleInputChange}
                         className={"textarea-input"}
+                    />
+                    <Snackbar
+                        open={openSnackbar}
+                        autoHideDuration={3000}
+                        onClose={handleCloseSnackbar}
+                        message="Sorry, this command is not permitted!"
+                        anchorOrigin={anchorOrigin}
                     />
                     <button type="submit">Submit</button>
                 </div>
