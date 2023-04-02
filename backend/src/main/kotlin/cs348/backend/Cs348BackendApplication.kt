@@ -274,19 +274,19 @@ class NbaStatsService(val db: JdbcTemplate) {
             )
         }
 
-    fun findTeamComp(home_team_ID: String, away_team_id: String): Int = 
+    fun findTeamComp(home_team_ID: String, away_team_ID: String): String? = 
         db.query(
             """
             SELECT COUNT(*) as num_of_winning_game
             FROM Game
-            WHERE HOME_TEAM_ID = ? AND
-                VISITOR_TEAM_ID = ? AND
+            WHERE HOME_TEAM_ID = $home_team_ID AND
+                VISITOR_TEAM_ID = $away_team_ID AND
                 PTS_home > PTS_away;
             """.trimIndent()
-        { response, _ ->           
-            response.getInt("num_of_winning_game")
-        },home_team_ID, away_team_ID
-        )
+        ){ response, _ ->           
+            response.getString("num_of_winning_game")
+        }.firstOrNull()
+        
 
     fun findWinners(startSeason: Int, endSeason: Int): List<WinnerResults> =
         db.query(
