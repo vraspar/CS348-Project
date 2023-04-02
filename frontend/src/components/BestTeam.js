@@ -32,15 +32,27 @@ const BestTeam = () => {
     const handleSort = (order, orderBy) => {
         setOrder(order);
         setOrderBy(orderBy);
+        console.log(data);
+        console.log("Sorting by " + orderBy + " in " + order + " order");
 
         const sortedData = data.sort((a, b) => {
-            if (order === "asc") {
-                return a[orderBy] - b[orderBy];
-            } else {
-                return b[orderBy] - a[orderBy];
+            if (orderBy === "teamName") {
+                if (order === "asc") {
+                    return a[orderBy].localeCompare(b[orderBy]);
+                } else {
+                    return b[orderBy].localeCompare(a[orderBy]);
+                }
+            }
+            else {
+                if (order === "asc") {
+                    return a[orderBy] - b[orderBy];
+                } else {
+                    return b[orderBy] - a[orderBy];
+                }
             }
         }
         );
+
         setData(sortedData);
         
     }
