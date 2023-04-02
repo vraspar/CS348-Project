@@ -274,6 +274,20 @@ class NbaStatsService(val db: JdbcTemplate) {
             )
         }
 
+    fun findTeamComp(home_team_ID: String, away_team_id: String): Int = 
+        db.query(
+            """
+            SELECT COUNT(*) as num_of_winning_game
+            FROM Game
+            WHERE HOME_TEAM_ID = ? AND
+                VISITOR_TEAM_ID = ? AND
+                PTS_home > PTS_away;
+            """.trimIndent()
+        { response, _ ->           
+            response.getInt("num_of_winning_game")
+        },home_team_ID, away_team_ID
+        )
+
     fun findWinners(startSeason: Int, endSeason: Int): List<WinnerResults> =
         db.query(
             """
@@ -353,4 +367,8 @@ class StatsController(val service: NbaStatsService) {
     @GetMapping("/championships")
     fun championships(@RequestParam("startSeason") startSeason: Int?, @RequestParam("endSeason") endSeason: Int?) =
         service.findWinners(startSeason ?: 1900, endSeason ?: 2100)
+
+    @GetMapping("/teamsHistory")
+    fun teamComp(@RequestParam("home_team_ID") home_team_ID: String, @RequestParam("away_team_ID") away_team_ID: String) =
+        service.findTeamComp(home_team_ID, away_team_ID)
 }
