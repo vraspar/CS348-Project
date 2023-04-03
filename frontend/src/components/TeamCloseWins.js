@@ -17,7 +17,6 @@ import {CSVLink, CSVDownload} from "react-csv";
 import DownloadIcon from '@mui/icons-material/Download';
 
 
-import TeamSelection from "./base/TeamSelection";
 import {StyledTableCell, StyledTableRow} from "../Styles/tables";
 
 

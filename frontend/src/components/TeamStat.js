@@ -30,7 +30,7 @@ const TeamStat = () => {
     const [data, setData] = useState([]);
 
 
-    const handleTeamChange = (newVal) => {
+    const handleTeamChange = (newVal, _) => {
         if (newVal === "") return;
         setTeam(newVal);
     }

@@ -10,7 +10,9 @@ const TeamSelection = ({onTeamChanged}) => {
 
     const handleTeamChange = (event) => {
         setCurTeam(event.target.value);
-        onTeamChanged(event.target.value);
+        const cur = team.find((team) => team.id === event.target.value);
+        const nickname = cur.nickname;
+        onTeamChanged(event.target.value, nickname);
     }
 
     useEffect(() => {

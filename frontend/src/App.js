@@ -99,14 +99,14 @@ function App() {
                     <ListItemText primary="Teams Stat" />
                   </ListItemButton>
                 </ListItem>
-                {/* <ListItem key="TeamComp" disablePadding>
+                <ListItem key="TeamComp" disablePadding>
                   <ListItemButton component={Link} to="/teamcomp">
                     <ListItemIcon>
                       <CompareArrowsIcon />
                     </ListItemIcon>
                     <ListItemText primary="Team Comparison" />
                   </ListItemButton>
-                </ListItem> */}
+                </ListItem>
                 <ListItem key="TeamAway" disablePadding>
                   <ListItemButton component={Link} to="/teamaway">
                     <ListItemIcon>
