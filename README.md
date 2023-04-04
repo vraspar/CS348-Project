@@ -18,4 +18,11 @@ They are available on https://ryanlarkin.github.io/cs348-data/, but the original
     It is connected to backend but, this is a WIP for Milestone 2
 3) Since it is a WIP it may crash sometimes
 
-PS: any questions ask on the discord channel
+## Sample/production queries
+These are located in the Database/testdb folder
+
+## Backend
+Code and instructions for running are located in the backend folder
+
+## Frontend
+Code and instructions for running are located in the frontend folder
